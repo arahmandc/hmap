@@ -155,8 +155,9 @@ L.OverPassLayer = L.FeatureGroup.extend({
 
     //id Editor link
 
-    // link.href = "http://www.openstreetmap.org/edit?editor=id&node=" + id;
-    // link.appendChild(document.createTextNode("Edit this entry in iD"));
+    link.href = "http://www.openstreetmap.org/edit?editor=id&node=" + id;
+    link.appendChild(document.createTextNode("Edit this entry in openstreetmap"));
+    
     var table = document.createElement('table');
     for (var key in tags){
       var row = table.insertRow(0);
