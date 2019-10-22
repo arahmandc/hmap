@@ -4,24 +4,110 @@
   <title>Health Map</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
   <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
   <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet-src.js"></script>
   <script src="dist/OverPassLayer.js"></script>
+  <link href="dist/leaflet.fullscreen.css" rel='stylesheet' />
+  <script src="dist/Leaflet.fullscreen.min.js"></script>
+
+  <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+
+
+
+
   <style>
     body {
       padding: 0;
       margin: 0;
     }
-    html, body, #map {
-      height: 100%;
+
+    /*768*/
+
+    /*1024*/
+
+    html, body #container{
+      height: 600px;
       width: 100%;
+    }
+
+     #leftbar{
+      margin-left: 10px;
+      float: left;
+      height: 618px;
+      width: 230px;
+    }
+
+
+
+
+    #map {
+      float: right;
+      height: 600px;
+      width: 1100px;
+    }
+
+
+
+    #fotter{
+      width: 100%;
+      height:50px;
     }
   </style>
 </head>
 <body>
+  <div id="container">
+    <div id="leftbar">
+      <h1 style="text-align: center; margin-top: 20px; color: #C70039;">Health Map</h1>
+      <h4 style="text-align: center; margin-top: 5px; ">Find Your Nearest Health Care Center</h4>
+      <hr>
+      <p style="text-align: justify;">
+        In this Map you can find your nearest Hospital, Clinic, Diagnostic center, Blood Bank, Therapie Center, Pharmacy and other health facilities. It is open to edit or add new data.
+      </p>
+      <hr>
+
+      <h3 style="text-align: center; color: #229954" >Map Legend</h3>
+      <div>
+        <h4 style="padding-left: 10px; margin-top:10px"><img src="hospital.png" style="width:16px;height:16px;">    Hospital</h4>
+        <h4 style="padding-left: 10px"><img src="clinic.png" style="width:16px;height:16px;">    Clinic</h4>
+        <h4 style="padding-left: 10px"><img src="tooth.png" style="width:16px;height:16px;">    Dentist</h4>
+        <h4 style="padding-left: 10px"><img src="therapistt.png" style="width:16px;height:16px;">    Therapie Center</h4>
+        <h4 style="padding-left: 10px"><img src="lab.png" style="width:16px;height:16px;">    Diagnostic center</h4>
+        <h4 style="padding-left: 10px"><img src="blood.png" style="width:16px;height:16px;">    Blood bank</h4>
+        <h4 style="padding-left: 10px"><img src="pills.png" style="width:16px;height:16px;">    Pharmacy</h4>
+      </div>
+      <hr>
+      <h4>Contribute</h4>
+      <p><a href="https://github.com/BangladeshOpenInnovationLab" target="_blank"><img src="blogo.jpg" width="" height="32px"/></a><a href="https://github.com/arahmandc/hmap" target="_blank"><img src="GitHub.png" width="" height="32px"/></a></p>
+
+    </div>
   <div id="map"></div>
+  </div>
+  
+  <div id="fotter">
+    <div style="margin-top: 1px"  align="center">
+ This Project initiative by <a href="https://www.facebook.com/groups/ask.bhoot/" color="black" target="_blank">Bangladesh Humanitarian OpenStreetMap Operational Team (BHOOT)</a></div>
+
+<div style="margin-right: 10px" align="right">Created by <a href="https://arahmandc.github.io/" target="_blank">Atikur Rahman</a></div>
+    
+<!--     <h4>@Copyright <a href="https://www.facebook.com/groups/ask.bhoot/"> Bangladesh Humanitarian OpenStreetMap Operational Team (BHOOT)...</a></h4> -->
+
+  </div>
+
+
+
   <script>
+
+
+    var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+    });
+
 	  var attr_osm = 'Map data &copy; <a href="http://openstreetmap.org/">OpenStreetMap</a> contributors',
       attr_overpass = 'POI via <a href="http://www.overpass-api.de/">Overpass API</a>';
     var osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {opacity: 0.7, attribution: [attr_osm, attr_overpass].join(', ')});
@@ -37,7 +123,8 @@
 
 
 
-		var map = new L.Map('map').addLayer(osm).setView(new L.LatLng(23.7739 ,90.3595), 15);
+		var map = new L.Map('map').addLayer(positron).setView(new L.LatLng(23.7739 ,90.3595), 15);
+
 
     //OverPassAPI overlay
     var trafficlights = new L.OverPassLayer({
@@ -53,7 +140,7 @@
           var popup = this.instance._poiInfo(e.tags,e.id);
           if(e.tags["amenity"]=="pharmacy") {
               var myicon = L.icon({
-                  iconUrl: 'medicine.png',
+                  iconUrl: 'pills.png',
                   iconSize: [16, 16],
                   iconAnchor: [-3, -3],
                   popupAnchor: [0, 0]
@@ -120,7 +207,7 @@
           var popup = this.instance._poiInfo(e.tags,e.id);
           if(e.tags["amenity"]=="clinic") {
               var myicon = L.icon({
-                  iconUrl: 'hospital.png',
+                  iconUrl: 'clinic.png',
                   iconSize: [16, 16],
                   iconAnchor: [-3, -3],
                   popupAnchor: [0, 0]
@@ -152,7 +239,7 @@
           var popup = this.instance._poiInfo(e.tags,e.id);
           if(e.tags["amenity"]=="dentist") {
               var myicon = L.icon({
-                  iconUrl: 'hospital.png',
+                  iconUrl: 'tooth.png',
                   iconSize: [16, 16],
                   iconAnchor: [-3, -3],
                   popupAnchor: [0, 0]
@@ -172,22 +259,140 @@
       },
     });
 
+
+
+        var blood = new L.OverPassLayer({
+      query: "node(BBOX)[healthcare=blood_donation];out;",
+      callback: function(data) {
+        for(i=0;i<data.elements.length;i++) {
+          e = data.elements[i];
+          if (e.id in this.instance._ids) return;
+          this.instance._ids[e.id] = true;
+
+          var pos = new L.LatLng(e.lat, e.lon);
+          var popup = this.instance._poiInfo(e.tags,e.id);
+          if(e.tags["healthcare"]=="blood_donation") {
+              var myicon = L.icon({
+                  iconUrl: 'blood.png',
+                  iconSize: [16, 16],
+                  iconAnchor: [-3, -3],
+                  popupAnchor: [0, 0]
+              });
+              var marker = L.marker(pos, {icon: myicon}).bindPopup(popup);
+              this.instance.addLayer(marker);
+          }else{
+              var circle = L.circle(pos, 50, {
+                  color: 'red',
+                  fillColor: '#000',
+                  fillOpacity: 0.5
+              })
+              .bindPopup(popup);
+              this.instance.addLayer(circle);
+          }
+        }
+      },
+    });
+
+         var laboratory = new L.OverPassLayer({
+      query: "node(BBOX)[healthcare=laboratory];out;",
+      callback: function(data) {
+        for(i=0;i<data.elements.length;i++) {
+          e = data.elements[i];
+          if (e.id in this.instance._ids) return;
+          this.instance._ids[e.id] = true;
+
+          var pos = new L.LatLng(e.lat, e.lon);
+          var popup = this.instance._poiInfo(e.tags,e.id);
+          if(e.tags["healthcare"]=="laboratory") {
+              var myicon = L.icon({
+                  iconUrl: 'lab.png',
+                  iconSize: [16, 16],
+                  iconAnchor: [-3, -3],
+                  popupAnchor: [0, 0]
+              });
+              var marker = L.marker(pos, {icon: myicon}).bindPopup(popup);
+              this.instance.addLayer(marker);
+          }else{
+              var circle = L.circle(pos, 50, {
+                  color: 'red',
+                  fillColor: '#000',
+                  fillOpacity: 0.5
+              })
+              .bindPopup(popup);
+              this.instance.addLayer(circle);
+          }
+        }
+      },
+    });
+
+
+           var therapist = new L.OverPassLayer({
+      query: "node(BBOX)[healthcare=occupational_therapist];out;",
+      callback: function(data) {
+        for(i=0;i<data.elements.length;i++) {
+          e = data.elements[i];
+          if (e.id in this.instance._ids) return;
+          this.instance._ids[e.id] = true;
+
+          var pos = new L.LatLng(e.lat, e.lon);
+          var popup = this.instance._poiInfo(e.tags,e.id);
+          if(e.tags["healthcare"]=="occupational_therapist") {
+              var myicon = L.icon({
+                  iconUrl: 'therapistt.png',
+                  iconSize: [16, 16],
+                  iconAnchor: [-3, -3],
+                  popupAnchor: [0, 0]
+              });
+              var marker = L.marker(pos, {icon: myicon}).bindPopup(popup);
+              this.instance.addLayer(marker);
+          }else{
+              var circle = L.circle(pos, 50, {
+                  color: 'red',
+                  fillColor: '#000',
+                  fillOpacity: 0.5
+              })
+              .bindPopup(popup);
+              this.instance.addLayer(circle);
+          }
+        }
+      },
+    });
+
+
+
+
+
+
+
     var baseMaps = {
+        "MapBox":positron,
         "OpenStreetMap": osm,
         "Hot OpenStreetMap": OpenStreetMap_HOT,
         "Esri Imagery": Esri_WorldImagery
     };
 
+
+
     var overlayMaps = {
         "Pharmacy": trafficlights,
         "Hospital": hospital,
         "Clinic": clinic,
-        "Dentist":dentist
+        "Dentist":dentist,
+        "Blood Bank": blood,
+        "Diagnostic center":laboratory,
+        "Therapy center":therapist
     };
     map.addLayer(trafficlights);
     map.addLayer(hospital);
+    map.addLayer(clinic);
+    map.addLayer(dentist);
+    map.addLayer(blood);
+    map.addLayer(laboratory);
+    map.addLayer(therapist);
 
     L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
   </script>
 </body>
 </html>
